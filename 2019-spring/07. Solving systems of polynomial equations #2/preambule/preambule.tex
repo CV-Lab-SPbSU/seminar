@@ -1,0 +1,122 @@
+\documentclass[notheorems,aspectratio=169]{beamer}
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathtext}
+\usepackage[english]{babel}
+\usepackage{commath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{indentfirst}
+\usepackage{geometry}
+\usepackage{tikz}
+\usepackage{tkz-euclide}
+\usetkzobj{all}
+\usetikzlibrary{arrows,positioning}
+\usetikzlibrary{shapes,snakes}
+\usetikzlibrary{shapes.multipart}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{tcolorbox}
+\usepackage{totcount}
+\usepackage{xcntperchap}
+\captionsetup{justification=centering}
+\usepackage{pgfpages}
+\usepackage{faktor}
+\usepackage{listings}
+\usepackage{bbold}
+%\pgfpagesuselayout{4 on 1}[a4paper,border shrink=5mm, landscape]
+\mode<presentation>
+{
+    \usetheme{Warsaw}
+%    \usecolortheme{beaver}
+    \setbeamercovered{transparent}
+}
+
+\regtotcounter{section}
+\regtotcounter{subsection}
+\RegisterCounters{section}{subsection}
+
+\usepackage{color}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+  backgroundcolor=\color{white},
+  basicstyle=\footnotesize,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  commentstyle=\color{mygreen},
+  deletekeywords={...},
+  escapeinside={\%*}{*)},
+  extendedchars=true,
+  frame=single,
+  keepspaces=true,
+  keywordstyle=\color{blue},
+  language=Octave,
+  morekeywords={*,...},
+  numbers=left,
+  numbersep=5pt,
+  numberstyle=\tiny\color{mygray}
+  rulecolor=\color{black},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  stepnumber=2,
+  stringstyle=\color{mymauve},
+  tabsize=2	                   %
+%  title=\lstname
+}
+
+
+\makeatletter
+% A new section definition to automatically set labels with the name: sec:sectionnumber
+\let\oldsection\section
+\renewcommand{\section}[1]{\oldsection{#1}\label{sec:\thesection}}
+% A new subsection definition to automatically set labels with the name: sec:sectionnumber.subsectionnumer
+\let\oldsubsection\subsection
+\renewcommand{\subsection}[1]{\oldsubsection{#1}\label{sec:\thesection.\thesubsection}}
+%init some calculators
+\newcounter{calculator}
+\newcounter{calcmaxsec}
+\newcounter{calcmaxsubsec}
+\providecommand{\TODO}{\fcolorbox{red}{red}{\large{TODO}}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{example}{Example}
+\newtheorem{definition}{Definition}
+\DeclareMathOperator{\upd}{upd}
+\DeclareMathOperator{\eol}{eol}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\providecommand{\err}[1]{$\mathcal{#1}$}
+\providecommand{\ev}[1]{$\mathbb{#1}$}
+\providecommand{\TODO}[1]{\fcolorbox{red}{red}{\large{FIXME}:#1}}
+\setbeamercovered{invisible}
+\setbeamertemplate{navigation symbols}{}
+\usepackage{physics}
+
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
+
+
+
+\addtobeamertemplate{frametitle}{\setlength{\parindent}{0em}}{}
+\addtobeamertemplate{block begin}{\setlength{\parindent}{0em}}{\setlength{\parindent}{2em}}
+\addtobeamertemplate{block example begin}{\setlength{\parindent}{0em}}{\setlength{\parindent}{2em}}
+
+
