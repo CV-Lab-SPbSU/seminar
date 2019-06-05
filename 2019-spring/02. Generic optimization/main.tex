@@ -1,0 +1,29 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage[russian]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\usetheme{Warsaw}
+\beamertemplatenavigationsymbolsempty
+\useoutertheme{infolines}
+\title{Generic function optimization}
+\author{Синицын Даниил}
+\date{\today}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\begin{document}
+\lstset{language=C++}
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+  \tableofcontents
+\end{frame}
+
+\input{methods/methods}
+
+\input{solvers/solvers}
+
+\end{document}

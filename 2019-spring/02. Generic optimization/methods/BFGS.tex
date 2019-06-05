@@ -1,0 +1,96 @@
+\subsection{BFGS}
+
+\begin{frame}
+  \frametitle{BFGS}
+    \begin{align*}
+      f : \mathbb{R}^n \rightarrow \mathbb{R} \\
+      x = \argmin f(x)
+    \end{align*}
+
+    На каждой итерации следующее приближение:
+
+    \begin{equation*}
+      m_k(p) = f_k + \nabla f_k^\intercal p_k + \frac{1}{2} p_k^\intercal B_k p_k
+    \end{equation*}
+
+    $B_k \in R^{n \times  n}$ -- симметричная и положительно определённая.  
+
+\end{frame}
+
+\begin{frame}
+    Направление поиска:
+
+    \begin{equation*}
+      p_k = - B_k^{-1} \nabla f_k
+    \end{equation*}
+    
+    Новая точка:
+
+    \begin{equation*}
+      x_{k+1} = x_k + \alpha_k p_k
+    \end{equation*}
+
+    $\alpha_k$ -- выбирается с учетом Wolfe condition.
+
+    $B_k$ -- не пересчитывается, а обновляется, учитывая кривизну функции с прошедшего шага.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Secant equation}
+  
+  После построения $m_{k+1}$ градиент $m_{k+1}$ должен совпадать с градиентом $f$ в $x_{k+1}$ и $x_k$.
+
+  \begin{equation*}
+    \nabla m_{k+1} (-\alpha_k p_k) = \nabla f_{k+1} - \alpha_k B_{k+1} p_k = \nabla f_k 
+  \end{equation*}
+
+  Откуда 
+
+  \begin{equation*}
+    B_{k+1} s_k = y_k
+  \end{equation*}
+
+  Мы хотим,чтобы  $B_k$ была положительно определенной 
+
+  \begin{equation} \label{BFGS_secant}
+    s_k^\intercal y_k > 0
+  \end{equation}
+
+  При выборе шага, удовлетворяющего Wolfe condition (\ref{BFGS_secant}) -- выполнятеся автоматически.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Выбор $B_{k+1}$}
+      \begin{equation*}
+        H_k = B_k^{-1} 
+      \end{equation*}
+      \begin{align*}
+        &\min_H \left\| H - H_k \right\|_W \\
+        &H = H^\intercal
+      \end{align*}
+      \begin{align*}
+        &H_{k+1} = \left( I - \rho_k s_k y_k^\intercal \right) H_k \left( I - \rho_k y_k s_k^\intercal \right) + \rho_k s_k s_k^\intercal \\
+        &\rho_k = \frac{1}{y_k^\intercal s_k}
+      \end{align*}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Initial hessian approximation}
+
+  Нет магической формулы, которая была бы хороша для каждой ситуации.
+
+  \begin{equation*}
+    B = \frac{\left\| \nabla f_0 \right\|}{\alpha}  
+  \end{equation*}
+
+  \begin{equation*}
+    B = \frac{y_1^\intercal y_1}{y_1^\intercal s_1} I
+  \end{equation*}
+
+  \begin{equation*}
+    B = I
+  \end{equation*}
+\end{frame}
+
+

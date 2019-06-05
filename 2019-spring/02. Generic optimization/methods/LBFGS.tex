@@ -1,0 +1,32 @@
+\subsection{L-BFGS}
+
+\begin{frame}
+  \frametitle{L-BFGS}
+  Проблема: размерность $H_k$ можеть быть очень большой, поэтому предлагается не хранить матрицу целиком, а содержать только лишь $m$ пар $(s_k, y_k)$.
+
+  \begin{align*}
+    & x_{k+1} = x_k - \alpha_k H_k \nabla f_k \\
+    & H_{k+1} = V_k^\intercal H_k V_k + \rho_k s_k s_k^\intercal \\
+    & V_k = I - \rho_k y_k s_k^\intercal, \quad \rho_k = \frac{1}{y_k^\intercal s_k} \\
+    & s_k = x_{k+1} - x_k, \quad y_k = \nabla f_{k+1} - \nabla f_k
+  \end{align*}
+\end{frame}
+
+\begin{frame}
+
+  \begin{align*}
+    H_k & = \left( V_{k-1}^\intercal ... V_{k-m}^\intercal \right)H_k^0 \left(V_{k-m} ... V_{k-1} \right) \\
+        & + \rho_{k-m}  \left( V_{k-1}^\intercal ... V_{k-m-1}^\intercal \right) s_{k-m} s_{k-1}^\intercal \left(V_{k-m-1} ... V_{k-1} \right) \\
+        & + ... \\
+        & + \rho_{k-1} s_{k-1} s_{k-1}^\intercal
+  \end{align*}
+
+  $H_k^0$ -- начальное приближение, может быть выбрано так же, как и для BFGS.
+
+  \begin{equation*}
+    H_k^0 = \frac{s_{k-1}^\intercal y_{k-1}}{y_{k-1}^\intercal y_{k-1}}
+  \end{equation*}
+  
+  %Смысл в том, что это пытается оценить размер "настоящего" Гессиана в направлении предыдущего шага.
+\end{frame}
+

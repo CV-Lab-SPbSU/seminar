@@ -1,0 +1,38 @@
+\section{Linear Search methods}
+
+\begin{frame}
+  \begin{itemize}
+    \item Linear search
+
+      На каждой итерации решается оптимизационная задача вдоль направления:
+
+      \begin{align*}
+        & f : \mathbb{R}^n \rightarrow  \mathbb{R} \\
+        & \alpha = \argmin f(x_k + \alpha p_k)  \\
+        & p_k = - B_{k}^{-1} \nabla f(x_k) 
+      \end{align*}
+    $B_k$ -- симметричная и невырожденная.
+  \end{itemize}
+\end{frame}
+
+
+\input{methods/wolfe}
+
+\input{methods/stepsize}
+
+\input{methods/gradient_descent.tex}
+
+\input{methods/conjugate_gradients.tex}
+
+
+\input{methods/BFGS}
+
+\input{methods/LBFGS}
+
+\section{Derivative-free optimization}
+
+\input{methods/neldermead.tex}
+
+\section{KKT}
+
+\input{methods/kkt.tex}

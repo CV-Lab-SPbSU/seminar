@@ -1,0 +1,23 @@
+\subsection{Step size selection}
+
+\begin{frame}
+  \frametitle{Intrepolation}
+    \begin{equation*}
+      \phi (\alpha_k) \leq \phi(0) + c_1 \alpha_k \phi'(0)
+    \end{equation*}
+
+    Как только $\alpha_k$ удовлетворяет условию, сразу прекращаем поиск.
+    \begin{itemize}
+    \item квадратичная аппроксимация
+
+    \begin{equation*}
+      \phi_q(\alpha) = \frac{\phi(\alpha_0) - \phi(0) - \alpha_0 \phi'(0)}{\alpha_0^2} \alpha^2 + \phi'(0) \alpha + \phi(0)
+    \end{equation*}
+
+    \item кубическая аппроксимация
+      \begin{equation*}
+        \phi_c(\alpha) = a \alpha^3 + b \alpha^2 + \phi'(0) \alpha + \phi(0)
+      \end{equation*}
+  \end{itemize}
+\end{frame}
+
