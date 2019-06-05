@@ -1,0 +1,65 @@
+\subsection{Karush-Kuhn-Tucker conditions}
+
+\begin{frame}
+  \frametitle{Условия Каруша-Куна-Таккера}
+  Задача:
+
+  \begin{align*}
+    & \min_x f(x) \\
+    & l_j(x) \leq 0 \\
+    & h_i(x) = 0
+  \end{align*}
+\end{frame}
+
+\begin{frame}
+  \begin{equation*}
+    L(x,u,v) = f(x) + \sum_{i=1}^{m} u_i h_i(x) + \sum_{j=1}^{r} v_j l_j(x) 
+  \end{equation*}
+
+\begin{itemize}
+
+\item Stationarity
+\begin{align*}
+  & \nabla L(x, u, v) = 0 
+  \end{align*}
+
+  \item Primal feasibility
+\begin{align*}
+  & l_j(x) \leq 0 \\
+  & h_i(x) = 0 
+\end{align*}
+
+\item Dual feasibility
+  \begin{align*}
+    & u_i \geq 0 
+  \end{align*}
+
+\item Complementary slackness
+\begin{align*}
+  & u_i h_i(x) = 0
+\end{align*}
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+
+Если существует тройка $(x^*, u^*, v^*)$, удовлетворяющая условиям с прошлого слайда, то $x^*$ -- локальный минимум.
+
+%\begin{figure}
+%  \begin{minipage}{0.48\textwidth}
+%  \centering
+%  \includegraphics[height=3cm]{figures/kkt_slackness.png}
+%  \caption{Complementary slackness}
+%\end{minipage}
+%\begin{minipage}{0.48\textwidth}
+%  \centering
+%  \includegraphics[height=3cm]{figures/dual_fis.png}
+%  \caption{Dual feasibility}
+%\end{minipage}
+%
+%\end{figure}
+
+
+\end{frame}

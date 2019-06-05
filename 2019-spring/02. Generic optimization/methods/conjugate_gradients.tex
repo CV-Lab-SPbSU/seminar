@@ -1,0 +1,55 @@
+\subsection{Non-linear conjugate gradients}
+
+%\subsubsection{Linear conjugate gradient method}
+%
+%\begin{frame}
+%  \frametitle{Линейный метод сопряжённых градиентов}
+%  \begin{equation*}
+%    \min x^\intercal A x - x^\intercal b
+%  \end{equation*}
+%    $A$ -- симметричная и положительно определённая.
+%  \begin{equation*}
+%    \nabla f(x) = Ax - b
+%  \end{equation*}
+%
+%  Вектора 
+%
+%\end{frame}
+%
+%\subsection{Non-linear conjugate gradients methdo}
+
+\begin{frame}
+   \frametitle{Нелинейный метод сопряжённых градиентов}
+    \begin{align*}
+      f : \mathbb{R}^n \rightarrow \mathbb{R} \\
+      x = \argmin f(x)
+    \end{align*}
+
+    Решение:
+
+    \begin{align*}
+      & x _{k+1} = x_k + \alpha_k d_k \\
+      & d_k = -\nabla f_k + \beta_k d_{k-1}
+    \end{align*}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Выбор $\beta_k$}
+
+  \begin{itemize}
+    \item The Fletcher-Reeves method
+
+      \begin{equation*}
+        \beta_k^{FR} = \frac{\nabla f_k^\intercal \nabla f_k}{\nabla f_{k-1}^\intercal \nabla f_{k-1} }
+      \end{equation*}
+    \item The Polak-Ribiere method
+
+      \begin{equation*}
+        \beta_k^{PR} = \frac{\nabla f_k^\intercal \left( \nabla f_k - \nabla f_{k-1} \right)}{\left\|\nabla f_{k-1} \right\|^2}
+      \end{equation*}
+
+
+  \end{itemize}
+
+\end{frame}
