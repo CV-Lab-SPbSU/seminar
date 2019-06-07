@@ -1,5 +1,6 @@
 language: bash
 dist: xenial
+if: tag IS blank
 before_install:
     - sudo apt-get update  
     - sudo apt-get install -y latexmk texlive-* wget
@@ -17,8 +18,9 @@ before_deploy:
 deploy:
     provider: releases
     api_key:
-        secure: RuqH8zVwd/AWibzn6c8KqToCRebofjTR6fdeNbMyI564PizS3FjZb/FBf3mIqsII1LnxCLSLG2EC/GLuI0zHVkLGeHL3h4DPRrs+l04zH63g5EM6P1MX0fJho2ptPR8K0O8JhswMB6FRDNcpgx5ZdgIb2el2QGFIi7guulDDbLtCrMP2h2i7zo1mNcqd32T5dJvtoCshbrKtFDvoVmgkaEBU+SN90Z2QUWY5Va6kG7GZ63g7gaMzLBsXTVabl8t/pobgDUf8ZNMil+RUXEqx6Mb/ksGeGCvGDvsenepaK7m39Z4N8LWkrkKkg46x9bhaBmeQcZnckWYQFa6ztM9D969jnuOJqvTFjbBSs64oSvHMSirr8MYg38xyGisqgox+P61R6zytRLeCwaE6l5JGYikYvxBr23kYhzQ1u69KKPp5d8ECTuvgQ7U0CfBNN0nXpw9WLLQMjRqOHTfxjljmlcHar8k/xMNjbFa45vxCfyKDbPjBmZR4Nu07Vehdc+XkidTrF0XeRhMRnNB0EERNZqth24jurTcdh08O+KyRdonr37BvtGPSwIVjk4ADpbFRDxMb926Wf8fsNGFi7YeKxKU+Er7cH6eSjEPO8bIKy1YD50svIGJBm9I/g2BZTTrS5xyJvyYNTbZ63Qycjiur4AW82B6jlaftE0sJIi+QkBM=
+        secure: jmADpRBaZG4WbknLGVF7xGNt0u/pFLbt3jGAJq5HMZ2rPcF3+8npno5uPmvgLOl47CxXOYw7qUHe0gp4jUjjI4xmI27gVvjQ640hEfHoXT+jS/i57DbiHmNTeF+Ubm0pN4lJ+yk6yXA0GQPqK9q+DL6bRd+JbK1dC3kgJmvQDB7fioXiuoq/yZF0veYxiaOSTpiKd1eS1OJEXsBjm04Pjn25Yz1i38W+uNfBmnCK7/94mIvfKGekwEi/N+o8EoNV7lG5u44xn8j+zDUTet/7A66RVrLScL/iCoSoefByvPYfdFsuoIVJqPAGOqsQEa7lQAZkRvl5CMYsHDUGOK2yY/iS5w6sACzGeE0lUBs85CX6sSLX6XLaGfdfUWu3Zf0xO+L4gs9soAVzVZtqFGRMqLKLzikoYFRt2Vdjtoeb/vP3in0ZAJ9EVp/yyvbL9eWzAp1nqbs95Tz6Vlc/JOxVuEOWUJF05OnkynLXIKZEC+M3+ilCZgv3mw9HVzsq9pFVTCRZkI3FErXyYRkF0hMzfsH5sD2jb71iiwbWatObc6P7qLQIi+Qn4OLNWmENqvA/wSLrLiOhwUoYhn1OFBoxOzsIhf/RcQTAq1jsSMkmuFHUivojk9p04ccg1flTN18s9/i12s7SUrrFfCKavBvCMB7RK22IEFV2sI+wukdA9As=
     file_glob: true
+    skip_cleanup: true
     file: ./build_artifacts/*tar.gz
     on:
         repo: CV-Lab-SPbSU/seminar
