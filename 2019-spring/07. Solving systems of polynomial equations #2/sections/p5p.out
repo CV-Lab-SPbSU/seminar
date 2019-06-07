@@ -1,0 +1,8 @@
+# dim I
+0
+# gens gb I
+[gb]{3}(10)mmmmmmmmmm{4}(15)ooooooooooooooonumber of (nonminimal) gb elements = 10 
+# basis A
+| 1 x x2 xy xz y y2 yz z z2 | 
+# leadTerm I
+| z3 yz2 xz2 y2z xyz x2z y3 xy2 x2y x3 |
