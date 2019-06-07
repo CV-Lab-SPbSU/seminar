@@ -1,0 +1,24 @@
+language: bash
+dist: xenial
+before_install:
+    - sudo apt-get update  
+    - sudo apt-get install -y latexmk texlive-* wget
+addons:
+    apt:
+        update: true
+script:
+    - sudo ./scripts/prepare_trusty.sh
+    - echo '$latex = '\''echo X | latex -interaction=errorstopmode %O %S'\' > ~/.latexmkrc
+    - ./scripts/build_all.sh
+before_deploy:
+    - git config --local user.name "SPbSU-CV-Lab CI"
+    - git config --local user.email "dmitriy.korchemkin+spbsu-cv@gmail.com"
+    - git tag "CI-$(date +%Y-%m-%d_%H-%M-%S)-$(git describe --always)"
+deploy:
+    provider: releases
+    api_key:
+        secure: RuqH8zVwd/AWibzn6c8KqToCRebofjTR6fdeNbMyI564PizS3FjZb/FBf3mIqsII1LnxCLSLG2EC/GLuI0zHVkLGeHL3h4DPRrs+l04zH63g5EM6P1MX0fJho2ptPR8K0O8JhswMB6FRDNcpgx5ZdgIb2el2QGFIi7guulDDbLtCrMP2h2i7zo1mNcqd32T5dJvtoCshbrKtFDvoVmgkaEBU+SN90Z2QUWY5Va6kG7GZ63g7gaMzLBsXTVabl8t/pobgDUf8ZNMil+RUXEqx6Mb/ksGeGCvGDvsenepaK7m39Z4N8LWkrkKkg46x9bhaBmeQcZnckWYQFa6ztM9D969jnuOJqvTFjbBSs64oSvHMSirr8MYg38xyGisqgox+P61R6zytRLeCwaE6l5JGYikYvxBr23kYhzQ1u69KKPp5d8ECTuvgQ7U0CfBNN0nXpw9WLLQMjRqOHTfxjljmlcHar8k/xMNjbFa45vxCfyKDbPjBmZR4Nu07Vehdc+XkidTrF0XeRhMRnNB0EERNZqth24jurTcdh08O+KyRdonr37BvtGPSwIVjk4ADpbFRDxMb926Wf8fsNGFi7YeKxKU+Er7cH6eSjEPO8bIKy1YD50svIGJBm9I/g2BZTTrS5xyJvyYNTbZ63Qycjiur4AW82B6jlaftE0sJIi+QkBM=
+    file_glob: true
+    file: ./build_artifacts/*tar.gz
+    on:
+        repo: CV-Lab-SPbSU/seminar
