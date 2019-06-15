@@ -1,0 +1,591 @@
+\documentclass[notheorems,aspectratio=169]{beamer}
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathtext}
+\usepackage[english,russian]{babel}
+\usepackage{commath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{indentfirst}
+\usepackage{geometry}
+\usepackage{tikz}
+\usepackage{tkz-euclide}
+\usetkzobj{all}
+\usetikzlibrary{arrows,positioning}
+\usetikzlibrary{shapes,snakes}
+\usetikzlibrary{shapes.multipart}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{tcolorbox}
+\usepackage{totcount}
+\usepackage{xcntperchap}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\captionsetup{justification=centering}
+\usepackage{pgfpages}
+%\pgfpagesuselayout{4 on 1}[a4paper,border shrink=5mm, landscape]
+\mode<presentation>
+{
+	\usetheme{Warsaw}
+	\usecolortheme{whale}
+	\setbeamercovered{transparent}
+	\useoutertheme{infolines}
+}
+
+\regtotcounter{section}
+\regtotcounter{subsection}
+\RegisterCounters{section}{subsection}
+
+
+\newtheorem{theorem}{Теорема}
+\newtheorem{example}{Пример}
+\newtheorem{definition}{Определение}
+\newtheorem{statement}{Утверждение}
+\newtheorem{corollary}{Следствие}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\setbeamercovered{invisible}
+\setbeamertemplate{navigation symbols}{}
+\usepackage{physics}
+
+\addtobeamertemplate{frametitle}{\setlength{\parindent}{0em}}{}
+\addtobeamertemplate{block begin}{\setlength{\parindent}{0em}}{\setlength{\parindent}{2em}}
+\addtobeamertemplate{block example begin}{\setlength{\parindent}{0em}}{\setlength{\parindent}{2em}}
+
+\makeatletter
+\setbeamertemplate{footline}
+{
+	\leavevmode%
+	\hbox{%
+		\begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+			\usebeamerfont{title in head/foot}\insertshorttitle
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd=.45\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+			\usebeamerfont{author in head/foot}\insertshortauthor\beamer@ifempty{\insertshortinstitute}{}{, \insertshortinstitute}
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd=.05\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+			\insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+		\end{beamercolorbox}}%
+	\vskip0pt%
+}
+
+
+
+\makeatletter
+\title{Базисы Грёбнера}
+\author{Елизавета Викторовна Миронович}
+\institute[344 группа]{344 группа \\ Лаборатория распознавания изображений \\  СПбГУ}
+\makeatletter
+\subject{\@title}
+\makeatother
+
+
+\begin{document}
+\begin{frame}
+  \maketitle
+\end{frame}
+
+\section{Введение}
+\subsection{Основые определения}
+\begin{frame}
+    \begin{definition}
+    Oдночленом или мономом переменных $x_1, \dots, x_n$ называется произведение вида $x^\alpha = x_1^{\alpha_1} \dots x_n^{\alpha_n} $,где $\alpha_i \in \mathbb{N}_0$. Степенью одночлена называется сумма $\alpha_1 + \dots + \alpha_n$.
+    \end{definition}
+    
+    \begin{definition}
+    Многочленом или полиномом  $f$ переменных $x_1, \dots, x_n$ над полем $k$ называется конечная линейная комбинация одночленов:
+    $$
+        f = \sum_\alpha a_\alpha x^\alpha, a_\alpha \in k
+    $$
+    
+    Множестово всех многочленов переменных  $x_1, \dots, x_n$ над полем $k$ будем обозначать~$k[x_1, \dots, x_n]$ 
+    \end{definition}
+\end{frame}
+
+\begin{frame}{Афинные многообразия}
+    \begin{definition}
+        Пусть $k$ -- поле, $f_1, \dots, f_s \in k[x_1, \dots, x_n]$, тогда афинным многообразием  заданным, с помощью многочленов $f_1, \dots, f_s$ будем называть множество
+    $$
+        V(f_1,\dots, f_s) = \left\{(a_1,\dots,a_n)\in k^n | \forall i\in [1:s]   f_i(a_1, \dots, a_n) = 0\right\}
+    $$
+    \end{definition}
+\end{frame}
+
+\begin{frame}{Идеалы}
+    \begin{definition}
+        Подмножество $I \subset k[x_1, \dots, x_n]$ будем называть идеалом, если оно удовлетворяет следующим свойствам:
+        \begin{itemize}
+            \item [(i)] $0 \in I$
+            \item [(ii)] если $f, g \in I$, то $f + g \in I$
+            \item [(iii)] если $f \in I$ и $h \in k[x_1, \dots, x_n]$, то $hf \in I$
+        \end{itemize}
+    \end{definition}
+\end{frame}
+
+\begin{frame} {Идеалы порождаемые многочленами} 
+    \begin{definition}
+         Пусть $f_1,\dots, f_s \in k[x_1, \dots, x_n]$, тогда положим 
+        $$
+            \langle f_1,\dots, f_s\rangle = \left\lbrace\sum_{i = 1}^s h_i f_i| h_1,\dots, h_s \in k[x_1, \dots, x_n]\right\rbrace
+        $$
+    \end{definition}
+    
+    \begin{statement}
+    $\langle f_1,\dots, f_s\rangle$ -- это идеал в $k[x_1, \dots, x_n]$. Будем говорить, что $f_1,\dots, f_s$ порождают идеал $\langle f_1,\dots, f_s\rangle$
+    \end{statement}
+\end{frame}
+
+\begin{frame}{Теорема Гильберта}
+    \begin{theorem}
+     У каждого идеала $I\in k[x_1,\dots, x_n]$ есть конечный набор порождающих многочленов. То есть, $\exists g_1,\dots, g_s\ink[x_1,\dots, x_n] : \langle g_1,\dots, g_s \rangle = I$
+    \end{theorem}
+\end{frame}
+
+\begin{frame}{Идеалы и афинные многообразия}
+    \begin{definition}
+    Пусть $V\subset k^n$ -- афинное многообразие, тогда определим множество
+    $$ 
+        I(V) = \{f\ink[x_1, \dots, x_n]|f(a_1, \dots, a_n) = 0 \forall (a_1,\dots, a_n)\in V\}
+    $$
+    \end{definition}
+    \begin{statement}
+        I(V) -- идеал
+    \end{statement}
+    Таким образом есть сопоставление:
+    $$
+        f_1,\dots, f_n \rightarrow V(f_1,\dots, f_n) \rightarrow I(V(f_1,\dots, f_n))
+    $$
+\end{frame}
+
+\section{Мономиальные порядки}
+
+\subsection{Определение}
+\begin{frame}{Мономиальный порядок}
+    \begin{definition}
+    Мономиальным порядком $>$ на $k[x_1, \dots, x_n]$ будем называть отношение $>$ на $ \mathbb{N}_{0}^n$, или, что то же самое, отношение на множестве одночленов $x^\alpha$, $\alpha\in \mathbb{N}_{0}^n$, которое удовлетворяет следующим условиям:
+    \begin{itemize}
+        \item [(i)] $>$ является линейным порядком на $\mathbb{N}_{0}^n$
+        \item [(ii)] если $\alpha > \beta$ и $\gamma \in \mathbb{N}_{0}^n$, то $\alpha + \gamma > \beta + \gamma $
+        \item [(iii)] $>$ вполне упорядочивает множество $\mathbb{N}_{0}^n$
+    \end{itemize}
+    \end{definition}
+
+\end{frame}
+
+\subsection{Примеры}
+\begin{frame}{Лексикографический порядок}
+    \begin{definition}
+         Пусть $x^\alpha$ и $x^\beta$ -- одночлены, будем говорить, что $x^\alpha >_{lex} x^\beta$, если самое левое ненулевое число в векторе $\alpha - \beta \in \mathbb{Z}^n$ положительно.
+    \end{definition}
+\end{frame}
+
+\begin{frame}{Взвешенный лексикографический порядок}
+    \begin{definition}
+         Пусть $x^\alpha$ и $x^\beta$ -- одночлены, будем говорить, что $x^\alpha >_{grlex} x^\beta$, если 
+        $$
+        |\alpha| = \sum_{i = 1}^n \alpha_i > |\beta| = \sum_{i = 1}^n \beta_i,
+        $$
+        или если $|\alpha| = |\beta|$ и  $x^\alpha >_{lex} x^\beta$.
+    \end{definition}
+   
+\end{frame}
+
+\begin{frame} {Обратный взвешенный лексикографический порядок}
+    \begin{definition}
+    Пусть $x^\alpha$ и $x^\beta$ -- одночлены, будем говорить, что $x^\alpha >_{grevlex} x^\beta$, если 
+    $$
+    |\alpha| = \sum_{i = 1}^n \alpha_i > |\beta| = \sum_{i = 1}^n \beta_i,
+    $$
+    или если $|\alpha| = |\beta|$ и самое правое ненулевое число в векторе $\alpha - \beta \in \mathbb{Z}^n$ отрицательно.
+    \end{definition}
+\end{frame}
+
+\subsection{Обобщённое деление}
+\begin{frame}
+    \begin{definition}
+     Пусть $f = \sum_\alpha a_\alpha x^\alpha\in k[x_1, \dots, x_n]$, $f \neq 0$ и $>$ -- мономиальный порядок.
+    \begin{itemize}
+        \item [(i)] мультистепенью $f$ будем называть 
+            $$
+                multideg(f) = \max\{\alpha\in\mathbb{N}_{0}^n| a_\alpha \neq 0\}
+            $$
+        \item [(ii)] ведущим коэффициентом $f$ будем называть 
+            $$
+                LC(f) = a_{multideg(f)} \in k
+            $$
+        \item [(iii)] ведущим мономом $f$ будем называть 
+        $$
+            LM(f) = x^{multideg(f)}
+        $$
+        \item [(iv)] ведущим членом $f$ будем называть 
+        $$
+            LT(f) = LC(f)\cdot LM(f)
+        $$
+    \end{itemize}
+    \end{definition}
+    
+\end{frame}
+
+\begin{frame}{Алгоритм деления}
+    \begin{theorem}
+    Пусть $>$ -- мономиальный порядок на $\mathbb{Z}_{\geq 0}^n$ и $F=(f_1, \dots, f_s)$ -- упорядоченный набор многочленов из $k[x_1,\dots, x_n]$, тогда любой многочлен $f\in k[x_1,\dots, x_n]$ можно представить как
+    $$
+        f = q_1f_1+\dots+q_sf_s+r,
+    $$
+    где $q_i, r \in k[x_1,\dots, x_n]$ и либо $r = 0$, либо $r$ -- линейная комбинация с коэффициентами из $k$ одночленов, ни один из которых не делится ни на какой из $LT(f_1),\dots, LT(f_s)$.
+    Будем называть $r$ остатком от деления $f$ на $F$.  
+    Более того, если $q_if_i\neq0$, тогда $multidegree(f)\geq multidegree(q_if_i)$
+    \end{theorem}
+    
+\end{frame}
+
+\begin{frame}{Описание алгоритма}
+     \begin{algorithmic}
+   \State $q_1 := 0;\cdots;q_s := 0; r := 0;p := f$
+   \While{$p\neq 0$}
+        \State $i := 1; divisionoccured := false$
+        \While{$i \leq s$ AND $divisionoccured = false$}
+            \If{$LT(f_i) | LT(p)$}
+                \State $q_i:=q_i + LT(p)/LT(f_i); p := p - \left(LT(P)/LT(f_i)\right)f(i)$
+                \State $divisionoccured := true$
+            \Else 
+                \State $i := i + 1$
+            \EndIf
+        \EndWhile
+        \If {$divisionoccured = false$}
+        \State $r := r + LT(p); p : = p - LT(p)$
+        \EndIf
+   \EndWhile
+    \end{algorithmic}
+\end{frame}
+
+\begin{frame}
+    \begin{example}
+    Рассмотрим $f = x^2 + xy^2 + y^2$ и $f_1 = xy - 1$ и $f_2 = y^2 - 1$
+    $$
+        x^2 + xy^2 + y^2 = (x+y)(xy-1) + 1\cdot (y^2-1) + x + y + 1,
+    $$
+    но
+    $$
+        x^2 + xy^2 + y^2 = (x+1)(y^2-1) + x\cdot(xy-1)+2x+1.
+    $$
+    \end{example}
+    
+    Таким образом, остаток от деления не однозначно определён набором многочленов.
+\end{frame}
+
+\section{Базис Грёбнера}
+\begin{frame} {Базис Грёбнера}
+    \begin{definition}
+        Пусть $I\subset k[x_1,\dots, x_n]$ -- ненулевой идеал. Зафиксируем мономиальный порядок на~$k[x_1,\dots, x_n]$. Тогда
+        \begin{itemize}
+            \item [(i)] обозначим за $LT(I)$ множество ведущих членов ненулевых элементов $I$:
+                $$
+                LT(I) = \left\{cx^\alpha | \exists f\in I\backslash\{0\} : LT(f) = cx^\alpha\right\};
+                $$
+            \item [(ii)] обозначим за $\left\langle LT(I) \right\rangle$ идеал порождённый элементами из $LT(I)$
+        \end{itemize}
+    \end{definition}
+    \begin{definition}
+    Зафиксируем мономиальный порядок на $k[x_1,\dots, x_n]$. Конечное подмножество $G=\{g_1,\dots, g_t\}$ идеала $I\subset k[x_1,\dots, x_n]$ называется базисом Грёбнера, если 
+    $$
+        \left\langle LT(g_1),\dots, LT(g_t)\right\rangle = \left\langle LT(I) \right\rangle
+    $$
+    \end{definition}
+\end{frame}
+
+\begin{frame}{Свойства базиса Грёбнера}
+    \begin{statement}
+          При делении многочлена на базис Грёбнера остаток от деления определяется однозначно.
+    \end{statement}
+    \begin{definition}
+     Остаток от деления многочлена $f$ на упорядоченный набор многочленов $F = (f_1,\dots, f_s)$ будем обозначать как $\overline f^F$.
+     
+         Соответственно, если $F$ -- это базис Грёбнера, то порядок многочленов неважен и можно считать, что $F$ -- множество.
+    \end{definition}
+\end{frame}
+
+\begin{frame}{S-полиномы}
+    \begin{definition}
+    Пусть $f, g$ -- ненулевые многочлены
+    \begin{itemize}
+        \item [(i)] если $multideg(f) = \alpha$ и $multideg(g) = \beta$, тогда пусть $\gamma = (\gamma_1, \dots, \gamma_n)$, где $\gamma_i = \max(\alpha_i, \beta_i)$ для каждого $i$.
+        Будем называть $x^\gamma$ -- наименьшим общим кратным $LM(f)$ и $LM(g)$, и будем писать $x^\gamma = lcm\left(LM(f), LM(g)\right)$.
+        \item [(ii)] S-полиномом $f$ и $g$ будем называть
+        $$
+            S(f, g) = \frac{x^\gamma}{LT(f)}\cdot f - \frac{x^\gamma}{LT(f)}\cdot g
+        $$
+    \end{itemize}
+    \end{definition}
+\end{frame}
+
+\begin{frame}{Критерй Бухбергера}
+    \begin{theorem}
+    Пусть $I$ -- идеал многочленов. Тогда базис 
+    $G = \{g_1,\dots, g_t\}$ идеала $I$ является базисом Грёбнера тогда и только тогда, когда для любой пары индексов $i\neq j$  $\overline{S(g_i, g_j)}^G = 0$.
+    \end{theorem}
+    
+    
+\end{frame}
+
+\begin{frame}{Алгоритм Бухбергера}
+    Пусть $I = \langle f_1,\dots, f_s\rangle \neq \{0\}$ -- идеал многочленов. Тогда базис Грёбнера $G$ для $I$ может быть найден за конечное число шагов по следующему алгоритму:
+    \begin{algorithmic}
+   \State $G := \langle f_1,\dots, f_s\rangle$
+    \Repeat
+        \State $G':= G$
+        \For {each pair $\{p, q\}, p\neq q$ in $G'$}
+            \State $r:= \overline{S(g_i, g_j)}^{G'}$
+            \If {$r\neq 0$}
+                \State $G := G \cup \{r\}$
+            \EndIf
+        \EndFor
+   \Until {$G = G'$}
+    \State \Return {$G$}
+    \end{algorithmic}
+\end{frame}
+
+
+\section{Решение сиситем полиномиальных уравнений}
+\subsection{Метод исключения с помощью базиса Грёбнера}
+\begin{frame}
+    \begin{definition}
+        Пусть $I$ -- идеал в $\mathbb{C}[x_1,\dots, x_n]$, тогда $k$-ым исключающим идеалом будем называть 
+        $$
+            I_k = I\cap\mathbb{C}[x_{k+1},\dots, x_n]
+        $$
+    \end{definition}
+    
+    \begin{theorem}
+        Пусть $G$ -- базис Грёбнера идела $I$ c лексикографическим порядком. Тогда 
+        $$
+            G_k = G \cap \mathbb{C}[x_{k+1},\dots, x_n]
+        $$
+         -- это базис Грёбнера для $I_k$.
+    \end{theorem}
+\end{frame}
+
+\begin{frame}{Алгоритм для метода исключений}
+    \begin{enumerate}
+        \item Найти базис Грёбнера $G$ для идеала $\langle f_1,\dots, f_s\rangle$ c лексикографическим порядком.
+        \item Найти решения для многочленов с одной переменной из $G$. (Такие многочлены существуют только если у системы конечное число решений).
+        \item Подставить найденные решения в остальные многочлены из $G$ и перейти к шагу 2.
+    \end{enumerate}
+    
+\end{frame}
+
+\begin{frame}{Пример}
+    Рассмотрим систему из двух полиномиальных уравнений с двумя неизвестными.
+   \begin{align*}
+       2x^2+y^2+3y-12=0 \\
+       x^2-y^2+x+3y-4=0
+   \end{align*}
+   Найдём базис Грёбнера для идеала, используя лексикографичекий порядок.
+   $$I = \langle 2x^2+y^2+3y-12, x^2-y^2+x+3y-4\rangle$$.
+   
+   Он равен 
+   $$G = \{9y^4-18y^3-13y^2+30y-8, 2x-3y^2+3y+4\}$$
+    $9y^4-18y^3-13y^2+30y-8$ -- порождает исключающий идеал $I_1 = I\cap\mathbb{C}[y]$.
+    Находим решение этого уравнения, преобразуя его как $9(y-1)(y-2)(y-\frac{1}{3})(y+\frac{4}{3})$. Подставляем его во второе уравнение из $G$ и получаем решения $(-2,1), (1,2), (-\frac{7}{3}, \frac{1}{3}), (\frac{8}{3}, -\frac{4}{3})$
+\end{frame}
+
+\begin{frame}{Недостатки метода исключений}
+    \begin{itemize}
+        \item Базисы Грёбнера в лексикографическом порядке зачастую очень большие и трудно вычислимые.
+        \item Большую часть времени решения многочленов одной переменной находятся приближённо. Подстановка таких решений обратно в систему способствует накапливанию ошибки.
+    \end{itemize}
+\end{frame}
+
+\subsection{Метод собственных чисел} 
+\begin{frame}{Факторкольцо}
+    \begin{definition}
+        Пусть $I$ -- идеал. 
+        Тогда факторкольцо $A = \mathbb{C}[x_1, \dots, x_n]/I$ -- это множество классов смежноcти по модулю идела
+        $$
+            A = \mathbb{C}[x_1, \dots, x_n]/I = {[f]:f\in \mathbb{C}[x_1, \dots, x_n]},
+        $$
+        где $$[f] = [g] \Longleftrightarrow f-g\in I$$
+    \end{definition}
+\end{frame}
+
+\begin{frame}{Факторкольцо и базис Грёбнера}
+    \begin{statement}
+        Если $G$ -- базис Грёбнера идеала $I$, то $\overline f^G = \overline g^G \Longleftrightarrow f-g\in I$
+    \end{statement}
+    Таким образом есть соответсвие $\overline f^G \longleftrightarrow [f]$
+    
+    Можно ввести арифметические опреации на  $A = \mathbb{C}[x_1, \dots, x_n]/I$
+    \begin{align*}
+        \overline f^G + \overline g^G = \overline{f+g}^G \longleftrightarrow [f] + [g] \\
+        \overline{\overline f^G \overline g^G}^G = \overline{fg}^G \longleftrightarrow [f]\cdot[g]
+    \end{align*}
+    Таким образом, $A$ явсляется алгеброй (векторным пространстом с умножением). Можно доказать, что $A$ -- конечномерное пространство тогда и только тогда, когда $V(I)$ -- конечное множество. В этом случае идеал $I$ называют идеалом нулевой размерности. В дальнейшем будем рассматривать только такие идеалы.
+\end{frame}
+
+\begin{frame}{Базис в факторкольце}
+    Так как остатки от деления $\overline f^G$ -- это линейная комбинация одночленов $x^\alpha \not\in \langle LT(I) \rangle$, то множесто 
+    $$
+        B = \{[x^\alpha] | x^\alpha \not\in \langle LT(I) \rangle \}
+    $$ 
+    обычно используется как стандартный базис для алгебры $A$.
+\end{frame}
+
+\begin{frame}{}
+    \begin{definition}
+        Пусть $f\in\mathbb{c}[x_1,\dots,x_n]$ -- многочлен, тогда определим отображение $m_f:A\rightarrow A$
+        $$
+        m_f([g]) = [f]\cdot[g] = [fg]\in A
+        $$
+    \end{definition}
+    
+    \begin{statement}
+        $m_f$ -- это линененое отображение, причем $m_f = m_g \Longleftrightarrow f-g\in I$.
+    \end{statement}
+        В частности, это значит, что $m_f =m_{\overline f^G}$, и можно считать, что $f$ уже является остатком.
+    
+    Так как мы рассматриваем конечномерные $A$, то можно представить $m_f:A\rightarrow A$ как матрицу в базисе $B$. $m_f = ((b_1)_B,\dots, (b_s)_B)$
+\end{frame}
+
+\begin{frame}
+    \begin{statement}
+        Пусть $f, g \in A$, тогда
+        \begin{itemize}
+            \item [(i)] $m_{f+g} = m_f+m_g$
+            \item [(ii)] $m_{f\cdot g} = m_f\cdot m_g$
+        \end{itemize}
+    \end{statement}
+    
+
+        Пусть $h(t) = \sum_{i = 0}^m c_it^i \in \mathbb{C}[t]$. Тогда выражение $h(f) = \sum_{i=0}^m c_i f^i$ можно воспринимать как элемент $\mathbb{C}[x_1,\dots, x_n]$. Также $h(m_f) = \sum_{i=0}^m c_i (m_f)^i$ является корректным выражением. Тогда можно написать следующее следствие.
+    \begin{corollary}
+        $$
+            m_{h(f)} = h(m_f)
+        $$
+    \end{corollary}
+\end{frame}
+
+\begin{frame}
+    Множество всеx многочленов $h\in\mathbb{C}[t]$ таких, что $h(M) = 0$, для матрицы $M$, образует идеал $I_M$. Идеал от одной переменной можно представить как $\langle h_M\rangle$(доказательство через алгоритм деления). 
+    \begin{definition}
+    Ненулевой приведённый многочлен, генерирующий идеал $I_M$ называется минимальным многочленом $M$. 
+    \end{definition}
+    \begin{theorem}
+        Пусть $I\subset\mathbb{C}[x_1,\dots, x_n]$ -- идеал нулевой размерности,
+        $f \in\mathbb{C}[x_1,\dots, x_n] $,
+        $h_f$ -- минимальный многочлен на $A = \mathbb{C}[x_1,\dots, x_n]/I$.
+        Тогда, для $\lambda\in\mathbb{C}[x_1,\dots, x_n]$ следующие утверждения эквивалентны:
+        \begin{itemize}
+            \item [(i)] $\lambda$ является корнем уравнения $h_f(t) = 0$
+            \item [(ii)] $\lambda$ является собственным числом матрицы $m_f$
+            \item [(iii)] $\lamda$ является значением функции $f$ на $V(I)$
+        \end{itemize}
+    \end{theorem}
+\end{frame}
+
+% \begin{frame}{}
+%     $(i) \Longleftrightarrow (ii)$ является классическим результатом линейной алгребры
+    
+%     $(ii) \Longrightarrow (iii)$ Пусть $\lambda$ -- собственное значение $m_f$, а $[z]\in A, [z]\neq 0$ соответсвующий ему собственный вектор, тогда $[f - \lamda][z] = [0]$.
+%     Докажем от противного, пусть $\lamda$ не является значением $f$ на $V(I)$. 
+%     То есть, если $V(I) = \{p_1,\dots, p_m\}$, то $f(p_i)\neq\lambda  \forall i = 1,\dots, m$.
+%     Положим $g = f - \lambda$, тогда $g(p_i)\neq 0\forall i$.
+%     Возьмём такой многочлен $g_i$, что $g_i(p_j) = 0$, при $i\neq j$, и $g_i(p_i) = 1$. Рассмотрим многочлен $g' = \sum_{i=1}^m 1/g(p_i)g_i$. Тогда получается, что $g'(p_i)g(p_i) = 1$ для всех $i$, поэтому $1-g'g\in I(V(I))$. По теорме Гильберта о нулях $(1-g'g)^l\in I$ для какого-то $l\geq 1$. Раскрывая скобку и собирая вс коэффициент при $g$, получаем $1 - \widetilde{g}g\in I$, для какого-то $\widetilde{g}\in\mathbb{C}[x_1,\dots,x_n]$. В $A$ это значит, что $[1] = [\widetilde{g}][g]$, то есть у $g$ есть обратный $\widetilde{g}$ в $A$.
+    
+%     Таким образом, получаем, $[g][z] = [f-\lambda][z] = [0]$ в $A$. Умножаем обе части на $\widetilde{g}$ и получаем $[z]=[0]$, что является противоречием. Итого, $\lambda$ -- это значение функции $f$ на $V(I)$.
+    
+%     $(iii)\Longrightarrow(i)$ Пусть $\lambda = f(p)$ для какого-то $p\in V(I)$. Так как $h_f(m_f) = 0$, то по следствию $h_f([f]) = [0]$, следовательно $h_f(f)\in I$. Это значит, что $h_f(f)$ обращается в ноль в каждой точке $V(I)$, поэтому $h_f(\lamba) = h_f(f(p)) = 0$.
+    
+% \end{frame}
+
+\begin{frame}
+    \begin{corollary}
+        Пусть $I\subset\mathbb{C}[x_1,\dots, x_n]$ -- идеал нулевой размерности. Тогда собственные числа матрицы оператора $m_{x_i}$ совпадают с $x_i$ координатой точек $V(I)$. Более того, если подставить $t = x_i$ в минимальный многочлен $h_{x_i}$, то получится генератор исключающего идеала $I\cap\mathbb{C}[x_1,\dots, x_n]$
+    \end{corollary}
+    
+    Таким образом, мы можем находить решения уравнений, вычисляя собственные числа операторов $m_{x_i}      $
+\end{frame}
+
+\begin{frame}{Многочлены одной переменной}
+    Рассмотрим приведённый многочлен одной переменной: $f=\sum_{i=1}^s c_ix^i$, где  $c_s = 1$.
+    
+    В этом случае базис Грёбнера состоит только из этого многочлена $f$, т.е. $G = \{f\}$ и стандартный базис для алгебры $A=\mathbb{C}[x]/I$ равен
+    $$
+        B = \left([1],[x],[x^2],\dots,[x^{s-1}]\right).
+    $$
+    Также, мы знаем, что $\overline{x^s}^G = -c_0-c_1x-\dots c_{s-1}x^{s-1}$. Таким образом, матрица умножения $M_x$ будет иметь вид:
+    \begin{displaymath}
+        {\bf X} =
+        \left( \begin{array}{ccccc}
+        0 & 0 & \ldots & 0 & -c_0 \\
+        1 & 0 & \ldots & 0 & -c_1 \\
+        0 & 1 & \ldots & 0 & -c_2 \\
+        \vdots & \vdots & \ddots &\vdots & \vdots \\
+         0 & 0 & \ldots & 1 & -c_{s-1}
+        \end{array} \right)
+    \end{displaymath}
+\end{frame}
+
+\subsection{Метод собственных векторов}
+
+\begin{frame}{Корень из идеала}
+    \begin{definition}
+        Пусть $I\subset k[x_1,\dots,x_n]$ -- это идеал. Тогда корнем из идеала назовём множество 
+        $$
+            \sqrt{I} = \left\{g\in k[x_1,\dots,x_n]| \exists m\in\mathbb{N}: g^m \in I\right\}
+        $$
+    \end{definition}
+    \begin{example}
+        $$
+            x+y\in \sqrt{\langle x^2+3xy, 3xy+y^2\rangle},
+        $$
+        так как
+        $$
+            (x+y)^3 = x(x^2+3xy)+y(3xy+y^2)\in\langle x^2+3xy, 3xy+y^2\rangle
+        $$
+    \end{example}
+    
+\end{frame}
+
+\begin{frame}{Метод собственных векторов}
+    Пусть $I=\sqrt{I}$, тогда известно, что $\dim A = #V(I)$. В этом случае можно базис $A$ можно представить как
+    $$
+        B = \left\{\left[x^{\alpha(1)}\right],\dots,\left[x^{\alpha(N)}\right]\right\}
+    $$
+    \begin{theorem}
+        Пусть $f\in\mathbb{C}[x_1,\dots,\x_n]$ -- многочлен, такой что все значения $f(p)$ для всех $p\in V(I)$ попарно различны. Тогда левые собственные векторы матрицы $m_f$ имеют вид $v = \beta\left(p^{\alpha(1)},\dots,p^{\alpha(N)}\right)$, где $\beta\in\mathbb{C}$, $\beta\neq 0$ и левые собственные пространства имеют размерность один.
+    \end{theorem}
+\end{frame}
+
+\begin{frame}{Доказательство}
+    Возьмём $\left[x^{\alpha(1)}\right]\in B$, тогда по определению $m_f = (m_{ij})$:
+    $$
+        m_f(\left[x^{\alpha(j)}\right]) = \left[f x^{\alpha(j)}\right] = \sum_{i=1}^N m_{ij}\left[x^{\alpha(i)}\right].
+    $$
+    Так как из $[f]=[g]$ следует, что $f = g + h$, для какого-то $h\in I$, то можно переписать предыдущее равенство как
+    $$
+    f x^{\alpha(j)} = \sum_{i=1}^N m_{ij}x^{\alpha(i)}.
+    $$
+    Так как для $p\in V(I)$ верно, что $h(p)=0$, поэтому
+    $$
+        f(p) p^{\alpha(j)} = \sum_{i=1}^N m_{ij}p^{\alpha(i)}.
+    $$
+\end{frame}
+
+\begin{frame}{Доказательство}    
+    Если мы применим это для всех $\left[x^{\alpha(j)}\right\in B]$, то получим
+    $$
+    f(p)\left(p^{\alpa(1)},\dots,p^{\alpha(N)}\right) = \left(p^{\alpa(1)},\dots,p^{\alpha(N)}\right) m_f
+    $$
+    Так как $I$ -- идеал нулевой размерности, то $[1]\in B$, что значит, что $\left(p^{\alpa(1)},\dots,p^{\alpha(N)}\right)\neq 0$. Таким образом, $\left(p^{\alpa(1)},\dots,p^{\alpha(N)}\right)$ -- это левый собственный вектор $m_f$, отвечающий собственному числу $f(p)$. Так как мы предположили, что все $f(p)$ разные, то у матрицы $M_f$ есть $N$ различных собственных чисел с соответствующими ими одноразмерными собственными пространствами. 
+\end{frame}
+
+\end{document}
