@@ -33,8 +33,10 @@
 \usepackage{xcntperchap}
 \captionsetup{justification=centering}
 \usepackage{pgfpages}
+\usepackage{pgfplots}
 \usepackage{physics}
 \usepackage{algorithm2e}
+\usepackage{listings}
 
 \mode<presentation>
 {
@@ -728,14 +730,12 @@
 
 \begin{frame}
   \frametitle{Применение на практике: ceres-solver}
+  \lstinputlisting[language=C++, basicstyle=\tiny]{example.cpp}
+\end{frame}
 
-  \begin{columns}[c]
-    \begin{column}{0.6\textwidth}
-      \begin{figure}
-        \includegraphics[width=0.8\linewidth, height=0.8\textheight, keepaspectratio]{minprog.png}\hspace*{4cm}
-      \end{figure}
-    \end{column}
-
+\begin{frame}
+  \frametitle{Применение на практике: ceres-solver}
+  \begin{columns}
     \begin{column}{0.4\textwidth}
       \begin{equation*}
         r\left(x, y\right)\approx
@@ -746,8 +746,26 @@
       \end{equation*}
       При этом $\sqrt{x}$ находится численным методом Ньютона. Несмотря на это, ceres-solver способен продифференцировать \emph{программу}, вычисляющую $r$ и найти $\argmin\left\Vert r\right\Vert^2$.
     \end{column}
-  \end{columns}
 
+    \begin{column}{0.6\textwidth}
+      \begin{figure}
+        \begin{tikzpicture}
+        \begin{axis}[
+            title={$\frac{1}{2}\left\Vert r\left(x, y\right)\right\Vert^2$}, 
+            xlabel=$x$, ylabel=$y$,
+                small,
+        ]
+        \addplot3[
+                surf,
+                domain=1:3,
+                domain y=1:3,
+        ] 
+                {0.5 * ((sqrt(x) - 1.41) ^ 2 + (1 / 9) * (y - 2) ^ 2)};
+        \end{axis}
+        \end{tikzpicture}
+      \end{figure}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \end{document}
