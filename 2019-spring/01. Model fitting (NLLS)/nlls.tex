@@ -209,7 +209,7 @@
   \framesubtitle{Метод Гаусса-Ньютона}
   Теперь в качестве шага можно выбирать минимум полученного приближения $F$\footnote[frame]{Предполагаем $n\geq m$, и что $\mathbf{J}$ --- полного ранга.}
   \begin{align*}
-    \Delta\mathbf{x}_k & =\argmin_{\Delta\mathbf{x}\in \mathbb{R}^m}\left\Vert\mathbf{r}+\mathbf{J}\Delta\mathbf{x}\right\Vert^2 \\
+    \Delta\mathbf{x}_k & =\argmin_{\Delta\mathbf{x}\in \mathbb{R}^m}\frac{1}{2}\left\Vert\mathbf{r}+\mathbf{J}\Delta\mathbf{x}\right\Vert^2 \\
                        & =\argmin_{\Delta\mathbf{x}\in \mathbb{R}^m}\left(\mathbf{g}^\intercal\Delta\mathbf{x}+\frac{1}{2}\Delta\mathbf{x}^\intercal\mathbf{H}\Delta\mathbf{x}\right)=\mathbf{H}^{-1}\mathbf{g} \\
       \mathbf{x}_{k+1}=\mathbf{x}_k+\Delta\mathbf{x}_k \\
   \end{align*}
@@ -276,7 +276,7 @@
   \framesubtitle{Как метод доверительного региона}
   После того, как мы сделали очередной шаг $\Delta\mathbf{x}_k$, мы можем оценить качество модели. Обычно для этого используется отношение реального изменения целевой функции к предсказанному
   \begin{equation*}
-    \rho=\frac{F\left(\mathbf{x}_k\right)-F\left(\mathbf{x}_k+\Delta\mathbf{x}\right)}{F\left(\mathbf{x}_k\right)-\left\Vert\mathbf{r}\left(\mathbf{x}_k\right)+\mathbf{J}\Delta\mathbf{x}\right\Vert^2}
+    \rho=\frac{F\left(\mathbf{x}_k\right)-F\left(\mathbf{x}_k+\Delta\mathbf{x}\right)}{F\left(\mathbf{x}_k\right)-\frac{1}{2}\left\Vert\mathbf{r}\left(\mathbf{x}_k\right)+\mathbf{J}\Delta\mathbf{x}\right\Vert^2}
   \end{equation*}
 
   Если $\rho$ особенно ``плохое'' (несколько порядков), то шаг отбрасыватся. Иначе шаг происходит, и в зависимости от $\rho$ доверительный регион либо увеличивается, либо уменьшается.
@@ -293,21 +293,21 @@
   {
     $\Delta\mathbf{x}_k=-\left(\mathbf{H}+\frac{1}{\mu_k}\mathbf{I}\right)^{-1}\mathbf{g}$\;
     Рассчитываем $\rho$ для шага $\Delta\mathbf{x}_k$\;
-    \uIf{$\rho<10^{-4}$}
+    \uIf{$\rho<\rho_{crit}$}
     {
-      отбросить шаг $\Delta\mathbf{x}_k$  $\mu_{k+1}=\frac{\mu_k}{2}$\;
+      $\mathbf{x}_{k+1}=\mathbf{x}_k$; \quad $\mu_{k+1}=\frac{\mu_k}{2}$\;
     }
     \uElseIf{$\rho<\rho_{bad}$}
     {
-      $\mathbf{x}_{k+1}=\mathbf{x}_k+\Delta\mathbf{x}_k;\,\,\,\, \mu_{k+1}=\frac{\mu_k}{2}$\;
+      $\mathbf{x}_{k+1}=\mathbf{x}_k+\Delta\mathbf{x}_k$; $\quad \mu_{k+1}=\frac{\mu_k}{2}$\;
     }
     \uElseIf{$\rho\approx 1$}
     {
-      $\mathbf{x}_{k+1}=\mathbf{x}_k+\Delta\mathbf{x}_k;\,\,\,\, \mu_{k+1}=2\mu_k$\;
+      $\mathbf{x}_{k+1}=\mathbf{x}_k+\Delta\mathbf{x}_k$; \quad $\mu_{k+1}=2\mu_k$\;
     }
     \Else
     {
-      $\mathbf{x}_{k+1}=\mathbf{x}_k+\Delta\mathbf{x}_k;\,\,\,\, \mu_{k+1}=\mu_k$\;
+      $\mathbf{x}_{k+1}=\mathbf{x}_k+\Delta\mathbf{x}_k$; \quad $\mu_{k+1}=\mu_k$\;
     }
   }
 \end{algorithm}
@@ -487,12 +487,12 @@
 \begin{frame}
   \frametitle{Отображение $\exp$ в $SO(3)$ и в $SE(3)$}
   \begin{itemize}
-    \item $\omega\in so(3)$ задает ось вращения, $\left\Vert\omega\right\Vert$ --- угол вращения.
+    \item $\omega\in \mathfrak{so}(3)$ задает ось вращения, $\left\Vert\omega\right\Vert$ --- угол вращения.
     \begin{equation*}
       \exp\left(\omega\right)=\exp\left(\omega_{\cross}\right)=\mathbf{I}+\left(\frac{\sin\left\Vert\omega\right\Vert}{\left\Vert\omega\right\Vert}\right)\omega_{\cross}+\left(\frac{1-\cos\left\Vert\omega\right\Vert}{\left\Vert\omega\right\Vert^2}\right)\omega_{\cross}^2
     \end{equation*}
 
-  \item $\left(\omega; \mathbf{u}\right)\in se(3)$
+  \item $\left(\omega; \mathbf{u}\right)\in \mathfrak{se}(3)$
     \begin{equation*}
     \begin{gathered}
       \mathbf{R}=\exp\left(\omega\right) \\
@@ -553,14 +553,14 @@
   Перепишем новую целевую функцию
   $$F\left(\mathbf{x}\right)=\frac{1}{2}\sum_{i=1}^n\rho\left(r_i^2\left(\mathbf{x}\right)\right)=\frac{1}{2}\sum_{i=1}^n\left(\sqrt{\rho\left(r_i^2\left(\mathbf{x}\right)\right)}\right)^2=\frac{1}{2}\sum_{i=1}^n{\tilde{r}_i}^2\left(\mathbf{x}\right)$$
   Для новой функции остатков тривиально пересчитывается якобиан $\tilde{\mathbf{J}}=\mathbf{W}\mathbf{J}$, и получаются выражения для $\mathbf{H}$ и $\mathbf{g}$:
-  $$\mathbf{H}=\mathbf{J}^\intercal \mathbf{W}^2\mathbf{J} \,\,\,\,\,\,\,\, \mathbf{g}=\mathbf{J}^\intercal\mathbf{W}\tilde{\mathbf{r}}$$
+  $$\mathbf{H}=\mathbf{J}^\intercal \mathbf{W}^2\mathbf{J} \qquad \mathbf{g}=\mathbf{J}^\intercal\mathbf{W}\tilde{\mathbf{r}}$$
 \end{frame}
 
 \begin{frame}
   \frametitle{Функции потерь}
   \framesubtitle{Продвинутая обработка}
   Усложним целевую функцию еще немного
-    $$F\left(\mathbf{x}\right)=\frac{1}{2}\sum_{i=1}^N\rho\left(\left\Vert\mathbf{r}_i\left(\mathbf{x}\right)\right\Vert^2\right)\,\,\,\,\,\,\mathbf{r}_i\left(\mathbf{x}\right)\in\mathbb{R}^{n_i}$$
+    $$F\left(\mathbf{x}\right)=\frac{1}{2}\sum_{i=1}^N\rho\left(\left\Vert\mathbf{r}_i\left(\mathbf{x}\right)\right\Vert^2\right) \quad \mathbf{r}_i\left(\mathbf{x}\right)\in\mathbb{R}^{n_i}$$
   Сконцентрируемся теперь на одном ее члене $G\left(\mathbf{x}\right)=\frac{1}{2}\rho\left(\left\Vert\mathbf{r}\left(\mathbf{x}\right)\right\Vert^2\right)$, $\mathbf{r}\left(\mathbf{x}\right)\in \mathbb{R}^n$.
     \begin{equation*}
       \begin{gathered}
@@ -594,7 +594,7 @@
   \end{itemize}
 
   В последнем случае имеем
-  $$\mathbf{H}=\mathbf{J}^\intercal\left(\rho'\mathbf{I}+2\rho''\mathbf{r}\mathbf{r}^\intercal\right)\mathbf{J} \,\,\,\,\,\,\,\, \mathbf{g}=\rho'\mathbf{J}^\intercal\tilde{\mathbf{r}}$$
+  $$\mathbf{H}=\mathbf{J}^\intercal\left(\rho'\mathbf{I}+2\rho''\mathbf{r}\mathbf{r}^\intercal\right)\mathbf{J} \qquad \mathbf{g}=\rho'\mathbf{J}^\intercal\tilde{\mathbf{r}}$$
 \end{frame}
 
 \begin{frame}
@@ -629,7 +629,7 @@
   \frametitle{Структура разреженности $H$}
   \begin{figure}
     \includegraphics[height=0.7\textheight, keepaspectratio]{h-struct.png}
-    \caption*{A-E --- кадры; 1-4 --- наблюдаемые точки; K1, K2 --- параметры камер}
+    \caption*{1-4 --- кадры; A-E --- наблюдаемые точки; K1, K2 --- параметры камер}
   \end{figure}
 \end{frame}
 
