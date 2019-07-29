@@ -36,7 +36,6 @@
 \usepackage{physics}
 \usepackage{algorithm2e}
 
-%\pgfpagesuselayout{4 on 1}[a4paper,border shrink=5mm, landscape]
 \mode<presentation>
 {
 	\usetheme{Warsaw}
@@ -106,10 +105,6 @@
 \begin{frame}
   \maketitle
   	\centering
-  % \begin{tabular}[t]{rl}
-	  % Руководитель: & Литвинов~Ю.\,В.\\
-	  % Консультант: & Корчемкин~Д.\,А.\\
-  % \end{tabular}
 \end{frame}
 
 \begin{frame}
@@ -426,7 +421,6 @@
       \end{pmatrix}
     \end{gathered}
   \end{equation*}
-  % где $\left\{\mathbf{e}_i\right\}$ --- строки $I_{m\cross m}$
 
 \end{frame}
 
@@ -682,17 +676,6 @@
   \end{equation*}
 \end{frame}
 
-% \begin{frame}
-  % \frametitle{Расчёт погрешностей}
-  % \framesubtitle{Распространение неопределенности}
-  % $\mathbf{X}\sim\mathcal{N}\left(\overline{\mathbf{X}}, \Sigma\right) \implies \mathbf{A}\mathbf{X}+\mathbf{b}\sim\mathcal{N}\left(\mathbf{A}\overline{\mathbf{X}}+\mathbf{b},\mathbf{A}^\intercal\Sigma\mathbf{A}\right)$
-
-  % Вспомним, что мы приближали нашу функцию остатков как $\mathbf{r}\left(\mathbf{x}+\Delta\mathbf{x}\right)\approx\mathbf{r}\left(\mathbf{x}\right)+\mathbf{J}\Delta\mathbf{x}$
-
-  % Если мы знаем ошибки в измеряемых величинах и учитыаем их ($\mathrm{Cov}\left[\mathbf{r},\mathbf{r}\right]=\mathbf{I}$), то мы можем оценить ошибки в искомых параметрах:
-  % $$\mathrm{Cov}\left[\Delta\mathbf{x}_{last},\Delta\mathbf{x}_{last}\right]=\left(\mathbf{J}^\intercal\mathbf{J}\right)^{-1}$$
-% \end{frame}
-
 \begin{frame}
   \frametitle{Оценки наибольшего правдоподобия}
   \framesubtitle{Выбор весов остатков}
@@ -724,24 +707,6 @@
   
   Мы получили оценку, соответствующую функции потерь Коши.
 \end{frame}
-
-% \begin{frame}
-  % \frametitle{Оценки наибольшего правдоподобия}
-  % \framesubtitle{Функции потерь}
-  % Возьмем теперь распределение вида
-
-  % $$
-  % \varepsilon\sim
-  % \left\{
-  % \begin{aligned}
-    % \mathcal{N}\left(0, \sigma\right) & \text{    с вероятностью } \alpha \\
-    % U\left(-T, T\right)               & \text{    с вероятностью } 1-\alpha
-  % \end{aligned}
-  % \right.
-  % $$
-
-  % Распределение моделирует 
-% \end{frame}
 
 \begin{frame}
   \frametitle{Оценки наибольшего правдоподобия}
@@ -785,9 +750,4 @@
 
 \end{frame}
 
-% \begin{frame}{Библиография}
-  % \bibliographystyle{plainnat}
-  % \bibliography{nlls}
-% \end{frame}
-  
 \end{document}
